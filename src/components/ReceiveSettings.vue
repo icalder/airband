@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col>
+    <v-col cols="12" sm="3">
       <v-form>
         <v-select
           v-model="fftSampleRate"
@@ -10,7 +10,7 @@
         ></v-select>
       </v-form>
     </v-col>
-    <v-col>
+    <v-col cols="12" sm="3">
       <v-form>
         <v-select
           v-model="iqSampleRate"
@@ -20,7 +20,7 @@
         ></v-select>
       </v-form>
     </v-col>
-    <v-col>
+    <v-col cols="12" sm="3">
       <v-form>
         <v-select
           label="Filter"
@@ -30,7 +30,7 @@
         ></v-select>
       </v-form>
     </v-col>
-    <v-col>
+    <v-col cols="12" sm="3">
       <v-form>
         <v-checkbox
           v-model="fmMode"
