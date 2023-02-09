@@ -6,9 +6,9 @@
           <v-tab value="tuning">Tuning</v-tab>
           <v-tab value="settings">Settings</v-tab>
         </v-tabs>
-        <v-window v-model="tab">
+        <v-window class="mt-3" v-model="tab">
           <v-window-item value="tuning">
-            <v-row>
+            <v-row align="center">
               <v-col v-if="!scanning" cols="4">
                   <v-select
                     v-model="selectedChannel"
