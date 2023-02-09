@@ -1,4 +1,4 @@
-import { WSClient } from '~/lib/wsclient'
+import { WSClient } from '@/lib/wsclient'
 
 export enum CommandType {
   CMD_HELLO,

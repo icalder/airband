@@ -1,5 +1,5 @@
 import { Command, CommandType } from './command'
-import { WSClient } from '~/lib/wsclient'
+import { WSClient } from '@/lib/wsclient'
 
 export class PingCommand extends Command {
   constructor() {
