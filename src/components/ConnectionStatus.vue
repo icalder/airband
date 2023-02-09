@@ -3,8 +3,8 @@
     <!-- For md and above screens -->
     <v-form class="d-none d-md-flex">
       <v-container>
-        <v-row>
-          <v-col cols="auto"
+        <v-row align="center">
+          <v-col
             ><v-text-field
               v-model="addr"
               :disabled="connected"
@@ -25,7 +25,7 @@
     <v-form v-if="connected" class="d-xs-flex d-sm-flex d-md-none">
       <v-container>
         <v-row>
-          <v-col cols="auto"
+          <v-col
             ><v-btn :color="buttonColour" @click.stop="toggleConnect()">{{
               buttonLabel
             }}</v-btn></v-col
