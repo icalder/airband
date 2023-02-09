@@ -7,7 +7,7 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-import colors from 'vuetify/lib/util/colors'
+//import colors from 'vuetify/lib/util/colors'
 import { VList } from 'vuetify/components'
 
 // Composables
@@ -29,7 +29,7 @@ export default createVuetify({
         },
       },
       dark: {
-        colors: {
+        /*colors: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
@@ -37,7 +37,7 @@ export default createVuetify({
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
-        }
+        }*/
       }
     },
   },
