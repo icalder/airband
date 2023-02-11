@@ -1,4 +1,4 @@
-import { Command, CommandType } from './command'
+import { Command, CommandType } from './Command'
 import { WSClient } from '@/lib/wsclient'
 
 // https://github.com/miweber67/spyserver_client/blob/master/spyserver_protocol.h

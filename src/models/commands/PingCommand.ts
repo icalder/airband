@@ -1,4 +1,4 @@
-import { Command, CommandType } from './command'
+import { Command, CommandType } from './Command'
 import { WSClient } from '@/lib/wsclient'
 
 export class PingCommand extends Command {

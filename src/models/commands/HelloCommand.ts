@@ -1,4 +1,4 @@
-import { Command, CommandType } from './command'
+import { Command, CommandType } from './Command'
 import { WSClient } from '@/lib/wsclient'
 
 const SPYSERVER_PROTOCOL_VERSION = (2 << 24) | (0 << 16) | 1700
