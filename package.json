@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vue-tsc --noEmit && vite build",
+    "buildimage": "docker build -t icalder/airband .",
+    "pushimage": "docker push icalder/airband",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },

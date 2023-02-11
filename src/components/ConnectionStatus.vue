@@ -86,7 +86,10 @@ import { useScanner, useSpyServer } from '@/composables'
 const spyServer = useSpyServer()
 const scanner = useScanner()
 
-const addr = ref('ws://192.168.1.90:8888/')
+let addr = ref(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.hostname + "/spymain")
+if (window.location.hostname == 'localhost') {
+  addr.value = 'ws://192.168.1.90:8888'
+}
 
 const connected = spyServer.connected
 const errors = reactive({
