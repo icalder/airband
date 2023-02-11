@@ -9,77 +9,76 @@
         <v-window class="mt-3" v-model="tab">
           <v-window-item value="tuning">
             <v-row align="center">
-              <v-col v-if="!scanning" cols="4">
-                  <v-select
-                    v-model="selectedChannel"
-                    :items="channels"
-                    item-title="name"
-                    item-value="frequency"
-                    :return-object="true"
-                    label="Channel"
-                    required
-                    v-on:update:model-value="tuneChannel"
-                  >
-                  </v-select>
-                </v-col>
-                <v-col v-if="!scanning">
-                  <v-menu
-                    v-model="tuningMenuOpen"
-                    offset-y
-                    :close-on-click="false"
-                    :close-on-content-click="false"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-btn class="ml-2" color="primary" v-bind="props">
-                        Tune
-                      </v-btn>
-                    </template>
-                    <v-card>
-                      <v-form @submit.prevent="tuneFrequency()">
-                        <v-card-text>
-                          <v-text-field v-model="enteredFreq"></v-text-field>
-                          <v-toolbar>
-                            <v-btn @click="freqKeypadButtonPressed(1)">1</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(2)">2</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(3)">3</v-btn>
-                          </v-toolbar>
-                          <v-toolbar>
-                            <v-btn @click="freqKeypadButtonPressed(4)">4</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(5)">5</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(6)">6</v-btn>
-                          </v-toolbar>
-                          <v-toolbar>
-                            <v-btn @click="freqKeypadButtonPressed(7)">7</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(8)">8</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed(9)">9</v-btn>
-                          </v-toolbar>
-                          <v-toolbar>
-                            <v-btn @click="freqKeypadButtonPressed(0)">0</v-btn>
-                            <v-btn @click="freqKeypadButtonPressed('.')"
-                              >.</v-btn
-                            >
-                            <v-btn @click="freqKeypadButtonPressed('DEL')"
-                              ><v-icon>
-                                {{ `mdi-backspace` }}
-                              </v-icon></v-btn
-                            >
-                          </v-toolbar>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            color="grey darken-2"
-                            dark
-                            @click="tuningMenuOpen = false"
-                            >CANCEL</v-btn
+              <v-col v-if="!scanning" cols="8" sm="6">
+                <v-select
+                  v-model="selectedChannel"
+                  :items="channels"
+                  item-title="name"
+                  item-value="frequency"
+                  :return-object="true"
+                  label="Channel"
+                  required
+                  v-on:update:model-value="tuneChannel"
+                >
+                </v-select>
+              </v-col>
+              <v-col v-if="!scanning">
+                <v-menu
+                  v-model="tuningMenuOpen"
+                  offset-y
+                  :close-on-click="false"
+                  :close-on-content-click="false"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-btn color="primary" v-bind="props">
+                      Tune
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-form @submit.prevent="tuneFrequency()">
+                      <v-card-text>
+                        <v-text-field v-model="enteredFreq"></v-text-field>
+                        <v-toolbar>
+                          <v-btn @click="freqKeypadButtonPressed(1)">1</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(2)">2</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(3)">3</v-btn>
+                        </v-toolbar>
+                        <v-toolbar>
+                          <v-btn @click="freqKeypadButtonPressed(4)">4</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(5)">5</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(6)">6</v-btn>
+                        </v-toolbar>
+                        <v-toolbar>
+                          <v-btn @click="freqKeypadButtonPressed(7)">7</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(8)">8</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed(9)">9</v-btn>
+                        </v-toolbar>
+                        <v-toolbar>
+                          <v-btn @click="freqKeypadButtonPressed(0)">0</v-btn>
+                          <v-btn @click="freqKeypadButtonPressed('.')"
+                            >.</v-btn
                           >
-                          <v-btn color="primary" @click="tuneFrequency()"
-                            >OK</v-btn
+                          <v-btn @click="freqKeypadButtonPressed('DEL')"
+                            ><v-icon>
+                              {{ `mdi-backspace` }}
+                            </v-icon></v-btn
                           >
-                        </v-card-actions>
-                      </v-form>
-                    </v-card>
-                  </v-menu>
+                        </v-toolbar>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="grey darken-2"
+                          @click="tuningMenuOpen = false"
+                          >CANCEL</v-btn
+                        >
+                        <v-btn color="primary" @click="tuneFrequency()"
+                          >OK</v-btn
+                        >
+                      </v-card-actions>
+                    </v-form>
+                  </v-card>
+                </v-menu>
               </v-col>
               <v-col v-else> {{ target?.name }} </v-col>
             </v-row>
@@ -198,7 +197,6 @@ const displayFrequency = computed(() => tunedFreq.value.toString())
 const displayGain = computed(() => clientSync.value?.gain || 0)
 
 async function tuneChannel(ch: Channel) {
-  console.log(`tuneChannel ${ch.name}`)
   await tuner.tune(ch.frequency)
   tuner.resetAGCGain(ch.gain)
 }
