@@ -97,7 +97,7 @@ export class SpyServerTuner implements Tuner {
   }
 
   get signalPresent(): boolean {
-    return this.pll.locked < 0.25
+    return this.pll.locked < 0.1
   }
 
   public startFiltering(cutoff: number) {
