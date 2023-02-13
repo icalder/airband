@@ -26,10 +26,11 @@ const HEIGHT = 200
 const props = defineProps<{
   fft: Uint8Array,
   frequency?: String | Number,
-  gain?: String | Number
+  gain?: String | Number,
+  signalLock?: Number
 }>()
 
-const { fft, frequency, gain } = toRefs(props)
+const { fft, frequency, gain, signalLock } = toRefs(props)
 let fftCanvas: HTMLCanvasElement
 let canvasCtx: CanvasRenderingContext2D
 
@@ -56,6 +57,7 @@ function draw() {
   drawCentreLine()
   drawFrequency()
   drawGain()
+  drawSignalLock()
 }
 
 function drawCentreLine() {
@@ -86,6 +88,13 @@ function drawGain() {
   if (gain?.value) {
     const txt = `G: ${gain.value}`
     drawText(txt, (width: number) => WIDTH - width)
+  }
+}
+
+function drawSignalLock() {
+  if (signalLock?.value) {
+    const txt = `L: ${signalLock.value.toFixed(2)}`
+    drawText(txt, (width: number) => 0)
   }
 }
 

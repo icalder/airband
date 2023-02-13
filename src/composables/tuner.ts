@@ -29,6 +29,7 @@ export class SpyServerTuner implements Tuner {
   private _state = reactive({
     fmMode: false,
     cutoff: 0,
+    signalLock: 100
   })
 
   // eslint-disable-next-line no-useless-constructor
@@ -97,6 +98,7 @@ export class SpyServerTuner implements Tuner {
   }
 
   get signalPresent(): boolean {
+    this._state.signalLock = this.pll.locked
     return this.pll.locked < 0.1
   }
 

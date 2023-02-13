@@ -133,6 +133,7 @@
           :fft="fft"
           :frequency="displayFrequency"
           :gain="displayGain"
+          :signal-lock="signalLock"
         />
       </v-container>
     </v-card>
@@ -172,6 +173,7 @@ const {
 const { fft } = spyServer.samples
 
 const tuner = useTuner()
+const { signalLock } = tuner.state
 
 const player = useStreamPlayer()
 const { playing, volume } = player.state
