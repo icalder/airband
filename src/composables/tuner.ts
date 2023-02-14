@@ -29,7 +29,7 @@ export class SpyServerTuner implements Tuner {
   private _state = reactive({
     fmMode: false,
     cutoff: 0,
-    signalLock: 100
+    signalLock: this.pll.locked
   })
 
   // eslint-disable-next-line no-useless-constructor

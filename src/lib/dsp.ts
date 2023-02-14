@@ -130,7 +130,7 @@ export class PLL {
   private filter: DirectForm2BiquadFilter
   private phiHat = 0
   private _deltaPhi = 0
-  private _lock = 0
+  private _lock = 0.5
   private _deltaPhiHat = 0
   private _am = 0
   private _fm = 0
@@ -156,7 +156,7 @@ export class PLL {
 
   reset() {
     this._deltaPhi = 0
-    this._lock = 0
+    this._lock = 0.5
     this.phiHat = 0
     this.filter.reset()
   }
