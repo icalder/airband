@@ -7,6 +7,7 @@ export interface Tuner {
   addSampleRateChangedCallback(callback: SampleRateChangedCallback): void
   addDemodulatedSignalHandler(callback: DemodulatedSignalHandler): void
   addSignalDetectedHandler(callback: SignalDetectedHandler): void
+  setMaxGain(maxGain: number): void
   tune(frequency: number): Promise<void>
   signalPresent: boolean
 }

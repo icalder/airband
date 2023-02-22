@@ -19,7 +19,6 @@ export class SpyServerTuner implements Tuner {
   private agc?: AGC
   private pll = new PLL(0.005, 0.707, 1000)
   private fmDemod = new Discriminator()
-  private maxGain = 0
   private desiredGain = 0
   private sampleRateChangedCallbacks: SampleRateChangedCallback[] = []
   private demodulatedSignalHandlers: DemodulatedSignalHandler[] = []
@@ -29,13 +28,14 @@ export class SpyServerTuner implements Tuner {
   private _state = reactive({
     fmMode: false,
     cutoff: 0,
+    maxGain: 0,
     signalLock: this.pll.locked
   })
 
   // eslint-disable-next-line no-useless-constructor
   constructor(private server: SpyServer) {
     server.addDeviceInfoCallback((deviceInfo) => {
-      this.setMaxGain(deviceInfo.maxGain)
+      this.setMaxGain(Math.ceil(deviceInfo.maxGain / 2))
     })
     server.addSampleRateChangedCallback((sampleRate) =>
       this.sampleRateChanged(sampleRate)
@@ -60,25 +60,17 @@ export class SpyServerTuner implements Tuner {
     this.sampleRateChanged(sampleRate)
   }
 
-  protected setMaxGain(maxGain: number) {
-    this.maxGain = maxGain
+  public setMaxGain(maxGain: number) {
+    this._state.maxGain = maxGain
     if (this.sampleRate > 0) {
-      this.agc = new AGC(
-        this.sampleRate,
-        maxGain / 2,
-        Math.floor(0.9 * maxGain)
-      )
+      this.agc = new AGC(this.sampleRate, maxGain, maxGain)
     }
   }
 
   protected sampleRateChanged(sampleRate: number) {
     this.sampleRate = sampleRate
-    if (this.maxGain > 0) {
-      this.agc = new AGC(
-        this.sampleRate,
-        this.maxGain / 2,
-        Math.floor(0.9 * this.maxGain)
-      )
+    if (this._state.maxGain > 0) {
+      this.agc = new AGC(this.sampleRate, this._state.maxGain, this._state.maxGain)
     }
     this.stopFiltering()
     if (!this.fmMode) {
@@ -118,7 +110,7 @@ export class SpyServerTuner implements Tuner {
   }
 
   public resetAGCGain(gain: number) {
-    gain = Math.min(this.maxGain, gain)
+    gain = Math.min(this._state.maxGain, gain)
     this.agc?.reset(gain)
     this.setDesiredGain(gain)
   }

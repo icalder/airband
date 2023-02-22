@@ -39,10 +39,22 @@
       </v-form>
     </v-col>
   </v-row>
+  <v-row>
+    <v-col cols="12" sm="3">
+      <v-form>
+        <v-select
+          label="Max gain"
+          :items=gainSettings
+          v-model="maxGain"
+          v-on:update:model-value="setMaxGain"
+        ></v-select>
+      </v-form>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, Ref, ref } from 'vue'
 import { useSpyServer, useTuner } from '@/composables'
 
 
@@ -50,7 +62,10 @@ const spyServer = useSpyServer()
 const tuner = useTuner()
 
 const { fftSampleRate, iqSampleRate, deviceInfo } = spyServer.state
-const { cutoff, fmMode } = tuner.state
+const { cutoff, fmMode, maxGain } = tuner.state
+
+const gainSettings: Ref<number[]> = ref([...Array(deviceInfo.value?.maxGain).keys()])
+
 const filters = [
   0,
   3000,
@@ -86,8 +101,7 @@ function setFilter (cutoff: number) {
   tuner.startFiltering(cutoff)
 }
 
-function setFMMode (selected: boolean) {
-  tuner.fmMode = selected
+function setMaxGain(maxGain: number) {
+  tuner.setMaxGain(maxGain)
 }
-
 </script>
