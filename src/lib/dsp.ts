@@ -182,3 +182,53 @@ export class PLL {
     return this._deltaPhiHat / ((2 * Math.PI * 1) / sampleRate)
   }
 }
+
+// https://liquidsdr.org/blog/pll-simple-howto/
+export class SimplePLL {
+  private beta: number
+  private phase_error = 0
+  private phase_out = 0
+  private frequency_out = 0
+  private _lock = 0.5
+  private _am = 0
+
+  constructor(private alpha: number) {
+    this.beta = 0.5 * alpha * alpha
+  }
+
+  reset() {
+    this.phase_error = 0
+    this.phase_out = 0
+    this.frequency_out = 0
+    this._am = 0
+  }
+
+  get deltaPhi() {
+    return this.phase_error
+  }
+
+  // If locked < ~0.5 that indicates lock
+  get locked() {
+    return this._lock
+  }
+
+  get am() {
+    return this._am
+  }
+
+  get fm() {
+    return this.phase_error
+  }
+
+  run(x: number[]): number[] {
+    const y = oscillator(this.phase_out)
+    const argInput = cmplxMultiply(x, conj(y))
+    this.phase_error = arg(argInput)
+    this._lock = 0.005 * this.phase_error ** 2 + 0.995 * this._lock
+    this.phase_out += this.alpha * this.phase_error
+    this.frequency_out += this.beta * this.phase_error
+    this.phase_out += this.frequency_out
+    this._am = argInput[0]
+    return y
+  }
+}

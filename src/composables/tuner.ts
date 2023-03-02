@@ -5,7 +5,7 @@ import {
   DemodulatedSignalHandler,
   SignalDetectedHandler,
 } from '@/lib/Tuner'
-import { AGC, l2NormCmplx, PLL } from '@/lib/dsp'
+import { AGC, l2NormCmplx, PLL, SimplePLL } from '@/lib/dsp'
 import {
   FIRFilter,
   generateLPFCoefficients,
@@ -17,7 +17,8 @@ export class SpyServerTuner implements Tuner {
   private iFilter?: FIRFilter
   private qFilter?: FIRFilter
   private agc?: AGC
-  private pll = new PLL(0.005, 0.707, 1000)
+  //private pll = new PLL(0.005, 0.707, 1000)
+  private pll = new SimplePLL(0.025)
   private fmDemod = new Discriminator()
   private desiredGain = 0
   private sampleRateChangedCallbacks: SampleRateChangedCallback[] = []

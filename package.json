@@ -8,7 +8,10 @@
     "buildimage": "docker build -t icalder/airband .",
     "pushimage": "docker push icalder/airband",
     "preview": "vite preview",
-    "lint": "eslint . --fix --ignore-path .gitignore"
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
@@ -31,6 +34,7 @@
     "typescript": "^4.0.0",
     "vite": "^3.0.9",
     "vite-plugin-vuetify": "^1.0.0-alpha.12",
+    "vitest": "^0.29.2",
     "vue-tsc": "^1.0.9"
   }
 }
