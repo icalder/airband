@@ -30,6 +30,7 @@ export class SpyServerTuner implements Tuner {
     fmMode: false,
     cutoff: 0,
     maxGain: 0,
+    squelch: 0.15,
     signalLock: this.pll.locked
   })
 
@@ -92,7 +93,7 @@ export class SpyServerTuner implements Tuner {
 
   get signalPresent(): boolean {
     this._state.signalLock = this.pll.locked
-    return this.pll.locked < 0.1
+    return this.pll.locked < this.state.squelch.value
   }
 
   public startFiltering(cutoff: number) {

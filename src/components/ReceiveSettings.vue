@@ -50,6 +50,15 @@
         ></v-select>
       </v-form>
     </v-col>
+    <v-col cols="12" sm="3">
+      <v-form>
+        <v-select
+          label="Squelch"
+          :items=squelchSettings
+          v-model="squelch"
+        ></v-select>
+      </v-form>
+    </v-col>
   </v-row>
 </template>
 
@@ -62,7 +71,7 @@ const spyServer = useSpyServer()
 const tuner = useTuner()
 
 const { fftSampleRate, iqSampleRate, deviceInfo } = spyServer.state
-const { cutoff, fmMode, maxGain } = tuner.state
+const { cutoff, fmMode, maxGain, squelch } = tuner.state
 
 const gainSettings: Ref<number[]> = ref([...Array(deviceInfo.value?.maxGain).keys()])
 
@@ -78,6 +87,17 @@ const filters = [
   8000,
   75000,
   150000,
+]
+
+const squelchSettings = [
+  0.05,
+  0.1,
+  0.15,
+  0.2,
+  0.25,
+  0.3,
+  0.4,
+  0.5
 ]
 
 const fftSampleRates = computed(() => deviceInfo.value?.availableSampleRates)
