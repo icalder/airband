@@ -18,7 +18,7 @@ export class SpyServerTuner implements Tuner {
   private qFilter?: FIRFilter
   private agc?: AGC
   //private pll = new PLL(0.005, 0.707, 1000)
-  private pll = new SimplePLL(0.025)
+  private pll = new SimplePLL(0.04)
   private fmDemod = new Discriminator()
   private desiredGain = 0
   private sampleRateChangedCallbacks: SampleRateChangedCallback[] = []
