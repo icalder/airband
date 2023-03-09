@@ -6,7 +6,7 @@ import { PCMStreamPlayer } from '@/lib/PCMStreamPlayer'
 const spyServer = new SpyServer()
 const tuner = new SpyServerTuner(spyServer)
 const player = new PCMStreamPlayer(tuner)
-const scanner = new Scanner(tuner)
+const scanner = new Scanner(tuner, spyServer)
 
 export function useSpyServer() {
   return spyServer

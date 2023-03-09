@@ -1,15 +1,28 @@
 import { reactive, toRefs } from 'vue'
 import { Channel } from './channels'
 import { Tuner } from '@/lib/Tuner'
+import { SpyServer } from './spyserver'
+import { SpectralPeakDetector } from '@/lib/dsp'
 
 export class Scanner {
   private _state = reactive({
     scanning: false,
     target: undefined as undefined | Channel,
+    peakDetectionThresholdDb: 2
   })
 
+  private peakDetector: SpectralPeakDetector
+  private measuringPeaks = false
+
   // eslint-disable-next-line no-useless-constructor
-  constructor(private tuner: Tuner) {}
+  constructor(private tuner: Tuner, spyServer: SpyServer) {
+    this.peakDetector = new SpectralPeakDetector()
+    spyServer.addFFTSamplesHandler(samples => {
+      if (this.measuringPeaks) {
+        this.peakDetector.addSamples(samples)
+      }
+    })
+  }
 
   public async scan(channels: Channel[], bank: number[]) {
     const scanTargets: Channel[] = []
@@ -33,7 +46,14 @@ export class Scanner {
         this._state.scanning = false
         break
       }
-      let signalPresent = this.tuner.signalPresent
+
+      // Tuner has changed frequency - spend 150ms doing FFT peak detection
+      this.peakDetector.reset()
+      this.measuringPeaks = true
+      await new Promise(resolve => setTimeout(resolve, 150))
+      this.measuringPeaks = false
+      let signalPresent = this.peakDetector.peakPresent(this._state.peakDetectionThresholdDb)
+
       while (signalPresent && this._state.scanning) {
         await this.signalNotPresent(this.tuner)
         await this.dwell()

@@ -232,3 +232,40 @@ export class SimplePLL {
     return y
   }
 }
+
+export class SpectralPeakDetector {
+  private bins = new Uint8Array()
+  private count = 0
+
+  reset() {
+    for (let i = 0; i != this.bins.length; ++i) {
+      this.bins[i] = 0
+    }
+    this.count = 1
+  }
+
+  addSamples(samples: Uint8Array) {
+    if ((this.bins.length != samples.length)) {
+      this.bins = new Uint8Array(samples.length)
+      this.count = 1
+    }
+    for (let i = 0; i != this.bins.length; ++i) {
+      this.bins[i] = (this.bins[i] * (this.count - 1) + samples[i]) / this.count
+    }
+    ++this.count
+  }
+
+  peakPresent(minPeakHeightDB: number): boolean {
+    let N = this.bins.length
+    if (this.bins.length > 3) {
+      // We drop the 3 highest values to reduce bias on the mean
+      this.bins.sort()
+      N -= 3
+    }
+    // Calculate the mean of the first N samples to determine noise floor
+    const mean = this.bins.filter((_, idx) => idx < N).reduce((a, b) => a + b) / N
+    // Take log of mean
+    const meanDB = 20 * Math.log10(mean)
+    return this.bins.some(v => 20 * Math.log10(v) - meanDB > minPeakHeightDB)
+  }
+}

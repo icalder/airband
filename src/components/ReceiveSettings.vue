@@ -59,19 +59,30 @@
         ></v-select>
       </v-form>
     </v-col>
+    <v-col cols="12" sm="3">
+      <v-form>
+        <v-select
+          label="Peak detection (DB)"
+          :items=peakDetectionThresholdDbSettings
+          v-model="peakDetectionThresholdDb"
+        ></v-select>
+      </v-form>
+    </v-col>
   </v-row>
 </template>
 
 <script lang="ts" setup>
 import { computed, Ref, ref } from 'vue'
-import { useSpyServer, useTuner } from '@/composables'
+import { useScanner, useSpyServer, useTuner } from '@/composables'
 
 
 const spyServer = useSpyServer()
 const tuner = useTuner()
+const scanner = useScanner()
 
 const { fftSampleRate, iqSampleRate, deviceInfo } = spyServer.state
 const { cutoff, fmMode, maxGain, squelch } = tuner.state
+const { peakDetectionThresholdDb } = scanner.state
 
 const gainSettings: Ref<number[]> = ref([...Array(deviceInfo.value?.maxGain).keys()])
 
@@ -99,6 +110,8 @@ const squelchSettings = [
   0.4,
   0.5
 ]
+
+const peakDetectionThresholdDbSettings = [1, 2, 3]
 
 const fftSampleRates = computed(() => deviceInfo.value?.availableSampleRates)
 const iqSampleRates = computed(() =>

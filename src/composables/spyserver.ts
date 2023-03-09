@@ -14,7 +14,7 @@ import {
 export type ErrorHandler = (err: Error) => void
 export type SampleRateChangedCallback = (sampleRate: number) => void
 export type FrequencyChangedCallback = (frequency: number) => void
-export type IQSamplesHandler = (data: Uint8Array) => void
+export type SamplesHandler = (data: Uint8Array) => void
 export type DeviceInfoCallback = (deviceInfo: DeviceInfo) => void
 export type ClientSyncCallback = (clientSync: ClientSync) => void
 
@@ -24,7 +24,8 @@ export class SpyServer {
   private errorHandlers: ErrorHandler[] = []
   private sampleRateChangedCallbacks: SampleRateChangedCallback[] = []
   private frequencyChangedCallbacks: FrequencyChangedCallback[] = []
-  private iqSamplesHandlers: IQSamplesHandler[] = []
+  private iqSamplesHandlers: SamplesHandler[] = []
+  private fftSamplesHandlers: SamplesHandler[] = []
   private deviceInfoCallbacks: DeviceInfoCallback[] = []
   private clientSyncCallbacks: ClientSyncCallback[] = []
   private _connected = ref(false)
@@ -66,7 +67,10 @@ export class SpyServer {
       this._state.frequency = clientSync.deviceCentreFreq
       this.clientSyncCallbacks.forEach((c) => c(clientSync))
     })
-    this.messageDecoder.watchFFTSamples((data) => (this._samples.fft = data))
+    this.messageDecoder.watchFFTSamples((data) => {
+      this._samples.fft = data
+      this.fftSamplesHandlers.forEach((h) => h(data))
+    })
     this.messageDecoder.watchIQSamples((data) => {
       this._samples.iq = data
       this.iqSamplesHandlers.forEach((h) => h(data))
@@ -98,8 +102,12 @@ export class SpyServer {
     this.frequencyChangedCallbacks.push(callback)
   }
 
-  addIQSamplesHandler(callback: IQSamplesHandler) {
+  addIQSamplesHandler(callback: SamplesHandler) {
     this.iqSamplesHandlers.push(callback)
+  }
+
+  addFFTSamplesHandler(callback: SamplesHandler) {
+    this.fftSamplesHandlers.push(callback)
   }
 
   addDeviceInfoCallback(callback: DeviceInfoCallback) {

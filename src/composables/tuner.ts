@@ -86,8 +86,10 @@ export class SpyServerTuner implements Tuner {
     // Ideally we would use the client sync callback from spyserver
     // to determine when the tuning has completed.  Instead, we'll just
     // wait for an aritrary delay...
+
+    // Wait 100ms to settle on new freq
     return new Promise<void>((resolve) => {
-      setTimeout(resolve, 200)
+      setTimeout(resolve, 100)
     })
   }
 
