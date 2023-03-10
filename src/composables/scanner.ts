@@ -47,10 +47,10 @@ export class Scanner {
         break
       }
 
-      // Tuner has changed frequency - spend 150ms doing FFT peak detection
+      // Tuner has changed frequency - spend 100ms doing FFT peak detection
       this.peakDetector.reset()
       this.measuringPeaks = true
-      await new Promise(resolve => setTimeout(resolve, 150))
+      await new Promise(resolve => setTimeout(resolve, 100))
       this.measuringPeaks = false
       let signalPresent = this.peakDetector.peakPresent(this._state.peakDetectionThresholdDb)
 

@@ -87,9 +87,9 @@ export class SpyServerTuner implements Tuner {
     // to determine when the tuning has completed.  Instead, we'll just
     // wait for an aritrary delay...
 
-    // Wait 100ms to settle on new freq
+    // Wait 150ms to settle on new freq
     return new Promise<void>((resolve) => {
-      setTimeout(resolve, 100)
+      setTimeout(resolve, 150)
     })
   }
 
