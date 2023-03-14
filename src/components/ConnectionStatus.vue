@@ -86,7 +86,7 @@ import { useScanner, useSpyServer } from '@/composables'
 const spyServer = useSpyServer()
 const scanner = useScanner()
 
-let addr = ref(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.hostname + "/spymain")
+const addr = ref(((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.hostname + "/spymain")
 if (window.location.hostname == 'localhost') {
   addr.value = 'ws://192.168.1.90:8888'
 }
