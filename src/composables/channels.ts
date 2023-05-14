@@ -26,6 +26,7 @@ export class Channel {
 const defaultChannels = [
   new Channel('Birmingham Radar', 123.975, 25),
   new Channel('London 133.6', 133.6, 25),
+  new Channel('Lndn Ctrl - Bristol', 134.75, 25),
   new Channel('Gloster Approach', 128.55, 25),
   new Channel('Bristol Radar', 125.65, 25),
   new Channel('London FIS', 124.75, 25),
