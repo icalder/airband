@@ -206,7 +206,7 @@ async function tuneChannel(ch: Channel) {
 async function tuneFrequency () {
   await tuner.tune(parseFloat(enteredFreq.value))
   // TODO hard coding!!!
-  tuner.resetAGCGain(15)
+  tuner.resetAGCGain(20)
   tuningMenuOpen.value = false
   selectedChannel.value = undefined
 }
