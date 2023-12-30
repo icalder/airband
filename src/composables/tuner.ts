@@ -37,7 +37,7 @@ export class SpyServerTuner implements Tuner {
   // eslint-disable-next-line no-useless-constructor
   constructor(private server: SpyServer) {
     server.addDeviceInfoCallback((deviceInfo) => {
-      this.setMaxGain(Math.min(deviceInfo.maxGain, 20));
+      this.setMaxGain(Math.min(deviceInfo.maxGain, 18));
     });
     server.addSampleRateChangedCallback((sampleRate) =>
       this.sampleRateChanged(sampleRate)
